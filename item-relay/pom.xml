@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.6.7</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<groupId>me.silvios.wasp</groupId>
+	<artifactId>item-relay</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<name>item-relay</name>
+	<description>Item Relay Message Receiver</description>
+	<properties>
+		<java.version>11</java.version>
+		<newrelic.api.version>7.6.0</newrelic.api.version>
+		<newrelic.logback.version>2.4.0</newrelic.logback.version>
+		<codehaus.janino.version>3.1.7</codehaus.janino.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.newrelic.agent.java</groupId>
+			<artifactId>newrelic-api</artifactId>
+			<version>${newrelic.api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.newrelic.logging</groupId>
+			<artifactId>logback</artifactId>
+			<version>${newrelic.logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.janino</groupId>
+			<artifactId>janino</artifactId>
+			<version>${codehaus.janino.version}</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<delimiters>
+						<delimiter>@</delimiter>
+					</delimiters>
+					<useDefaultDelimiters>false</useDefaultDelimiters>
+				</configuration>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}</directory>
+									<includes>
+										<include>newrelic.yml</include>
+									</includes>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<artifactItems>
+						<artifactItem>
+							<groupId>com.newrelic.agent.java</groupId>
+							<artifactId>newrelic-agent</artifactId>
+							<version>${newrelic.api.version}</version>
+							<destFileName>newrelic-agent.jar</destFileName>
+							<type>jar</type>
+							<overWrite>true</overWrite>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+						</artifactItem>
+					</artifactItems>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
