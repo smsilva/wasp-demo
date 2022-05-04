@@ -1,4 +1,4 @@
-package me.silvios.wasp.itemrelay;
+package me.silvios.wasp.itemconsumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

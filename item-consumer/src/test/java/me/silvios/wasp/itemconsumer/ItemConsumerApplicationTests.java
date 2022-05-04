@@ -1,10 +1,10 @@
-package me.silvios.wasp.itemrelay;
+package me.silvios.wasp.itemconsumer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ItemRelayApplicationTests {
+class ItemConsumerApplicationTests {
 
 	@Test
 	void contextLoads() {

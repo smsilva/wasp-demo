@@ -13,4 +13,4 @@ docker run \
   -e NEW_RELIC_API_KEY="${NEW_RELIC_API_KEY?}" \
   -e NEW_RELIC_LOG_LEVEL="${NEW_RELIC_LOG_LEVEL-info}" \
   -e NEW_RELIC_APPENDER_ENABLED="${NEW_RELIC_APPENDER_ENABLED-false}" \
-  wasp-item-relay:latest
+  wasp-item-consumer:latest

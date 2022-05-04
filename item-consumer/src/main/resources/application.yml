@@ -14,7 +14,7 @@ logging:
 
 spring:
   application:
-    name: item-relay-service
+    name: item-consumer-service
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}
     port: ${RABBITMQ_PORT:5672}

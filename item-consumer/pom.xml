@@ -10,11 +10,11 @@
 	</parent>
 
 	<groupId>me.silvios.wasp</groupId>
-	<artifactId>item-relay</artifactId>
+	<artifactId>item-consumer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<name>item-relay</name>
-	<description>Item Relay Message Receiver</description>
+	<name>item-consumer</name>
+	<description>Item Messages Consumer</description>
 	<properties>
 		<java.version>11</java.version>
 		<newrelic.api.version>7.6.0</newrelic.api.version>

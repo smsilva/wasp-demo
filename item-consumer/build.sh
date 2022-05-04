@@ -6,4 +6,4 @@ mvn package
 
 docker build \
   --rm \
-  --tag "wasp-item-relay:latest" .
+  --tag "wasp-item-consumer:latest" .
