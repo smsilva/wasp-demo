@@ -1,0 +1,21 @@
+httpbin:
+  host: http://httpbin.org
+
+service:
+  timeout: ${TIMEOUT_REQUEST_SERVICE:30000}
+
+async:
+  corePoolSize: ${ASYNC_CORE_POOLSIZE:100}
+  maxPoolSize: ${ASYNC_MAX_POOLSIZE:200}
+
+server:
+  forward-headers-strategy: framework
+  port: ${SERVER_PORT:8080}
+
+springdoc:
+  api-docs:
+    path: /v2/api-docs
+  swagger-ui:
+    operationsSorter: method
+    layout: BaseLayout
+    disable-swagger-default-url: true
