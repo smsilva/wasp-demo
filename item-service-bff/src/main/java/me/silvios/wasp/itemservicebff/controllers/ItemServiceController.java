@@ -1,4 +1,4 @@
-package me.silvios.wasp.itemservicebff;
+package me.silvios.wasp.itemservicebff.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.util.UrlPathHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
@@ -19,16 +20,16 @@ import java.net.URISyntaxException;
 import java.util.Enumeration;
 
 @RestController
-public class HelloController {
+public class ItemServiceController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HelloController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ItemServiceController.class);
 
     private final RestTemplate restTemplate;
 
     public static final String HTTPBIN_SERVICE_PATH = "/item-service";
     public static final String PAGEABLE_PREFIX = "pageable";
 
-    public HelloController(RestTemplate restTemplate) {
+    public ItemServiceController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
@@ -38,9 +39,19 @@ public class HelloController {
     @GetMapping("/**")
     public ResponseEntity<?> mirrorRest(HttpMethod method, HttpServletRequest request)
             throws URISyntaxException {
-        LOGGER.info("Requesting request.getRequestURI(): {}", request.getRequestURI());
+        LOGGER.info("host: {}", host);
+        LOGGER.info("request.getRequestURL(): {}", request.getRequestURL());
+        LOGGER.info("request.getRequestURI(): {}", request.getRequestURI());
+        LOGGER.info("request.getScheme(): {}", request.getScheme());
+        LOGGER.info("request.getContextPath(): {}", request.getContextPath());
+
+        String pathWithinApplication = new UrlPathHelper().getPathWithinApplication(request);
+
+        LOGGER.info("UrlPathHelper().getPathWithinApplication(request): {}", pathWithinApplication);
 
         String requestUrl = getServiceURL(request.getRequestURI());
+
+        LOGGER.info("getServiceURL(request.getRequestURI()): {}", requestUrl);
 
         URI uri =
                 UriComponentsBuilder.fromUri(new URI(host))
@@ -49,16 +60,23 @@ public class HelloController {
                         .build(true)
                         .toUri();
 
-        LOGGER.info("Requesting item-service proxy: {}", uri);
+        LOGGER.info("uri: {}", uri);
+
         HttpHeaders headers = new HttpHeaders();
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
-            headers.set(headerName, request.getHeader(headerName));
+            String headerValue = request.getHeader(headerName);
+
+            headers.set(headerName, headerValue);
+
+            LOGGER.info("header.{}: {}", headerName, headerValue);
         }
+
         try {
             ResponseEntity<String> exchange =
                     restTemplate.exchange(uri, method, new HttpEntity<>(headers), String.class);
+
             LOGGER.debug("Request response headers: {}", exchange.getHeaders());
             LOGGER.debug("Request response body: {}", exchange.getBody());
             LOGGER.info("Request response status: {}", exchange.getStatusCode());
@@ -87,8 +105,17 @@ public class HelloController {
     }
 
     private String getServiceURL(String originalURL) {
-        return originalURL.substring(
-                originalURL.indexOf(HTTPBIN_SERVICE_PATH) + HTTPBIN_SERVICE_PATH.length());
+        LOGGER.info("originalURL: {} [length: {}]", originalURL, originalURL.length());
+
+        int beginIndex = originalURL.indexOf(HTTPBIN_SERVICE_PATH) + HTTPBIN_SERVICE_PATH.length();
+
+        LOGGER.info("beginIndex: {}", beginIndex);
+
+        if (beginIndex >= 0 && beginIndex <= originalURL.length()) {
+            return originalURL.substring(beginIndex);
+        } else {
+            return originalURL;
+        }
     }
 
 }
