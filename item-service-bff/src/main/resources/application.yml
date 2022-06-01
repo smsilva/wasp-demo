@@ -1,5 +1,5 @@
 httpbin:
-  host: http://httpbin.org
+  host: ${HTTPBIN_HOST-http://httpbin.org}
 
 service:
   timeout: ${TIMEOUT_REQUEST_SERVICE:30000}
