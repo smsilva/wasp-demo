@@ -23,4 +23,4 @@ spring:
     virtual-host: ${RABBITMQ_VIRTUAL_HOST:vhost}
 
 queues:
-  main: teste
+  main: ${RABBITMQ_QUEUE_NAME_MAIN:teste}

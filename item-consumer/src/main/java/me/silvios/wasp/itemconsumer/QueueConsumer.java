@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class QueueConsumer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QueueConsumer.class);
+
     @RabbitListener(queues = {"${queues.main}"})
     public void receive(@Payload String payload) {
         LOGGER.info("{}", payload);
