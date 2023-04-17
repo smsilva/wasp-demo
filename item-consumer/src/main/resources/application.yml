@@ -21,6 +21,8 @@ spring:
     username: ${RABBITMQ_USERNAME:user}
     password: ${RABBITMQ_PASSWORD:password}
     virtual-host: ${RABBITMQ_VIRTUAL_HOST:vhost}
+    ssl: 
+      enabled: ${RABBITMQ_SSL_ENABLED:false}
 
 queues:
   main: ${RABBITMQ_QUEUE_NAME_MAIN:teste}
