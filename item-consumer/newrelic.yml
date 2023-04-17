@@ -329,15 +329,15 @@ common: &default_settings
 
 development:
   <<: *default_settings
-  app_name: item-relay (Development)
+  app_name: item-consumer-dev
 
 test:
   <<: *default_settings
-  app_name: item-relay (Test)
+  app_name: item-consumer-test
 
 production:
   <<: *default_settings
 
 staging:
   <<: *default_settings
-  app_name: item-relay (Staging)
+  app_name: item-consumer-staging
