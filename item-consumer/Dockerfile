@@ -1,4 +1,4 @@
-FROM azul/zulu-openjdk-alpine:11-jre
+FROM azul/zulu-openjdk-alpine:17-jre
 
 ADD target/newrelic-agent.jar /opt/service/newrelic-agent.jar
 ADD target/newrelic.yml       /opt/service/newrelic.yml
