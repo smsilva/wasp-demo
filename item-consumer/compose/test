@@ -1,0 +1,38 @@
+#!/bin/bash
+export MONGODB_HOST="mongo"
+export MONGODB_DATABASE_NAME="demo"
+export MONGODB_USERNAME="root"
+export MONGODB_PASSWORD="example"
+export MONGODB_PASSWORD_URL_ENCODED=$(printf %s "${MONGODB_PASSWORD?}" | jq -sRr @uri)
+export MONGODB_CONNECTION_STRING="mongodb://${MONGODB_USERNAME?}:${MONGODB_PASSWORD_URL_ENCODED?}@${MONGODB_HOST?}:27017/"
+
+mongosh \
+  --host localhost \
+  --username ${MONGODB_USERNAME?} \
+  --password ${MONGODB_PASSWORD_URL_ENCODED?} \
+  --authenticationDatabase admin \
+  ${MONGODB_DATABASE_NAME?} \
+  --eval 'db.customers.insertOne({"name":"Silvio Silva","cpf":"02822765480"});' \
+  --quiet
+
+mongosh \
+  --host localhost \
+  --username ${MONGODB_USERNAME?} \
+  --password ${MONGODB_PASSWORD_URL_ENCODED?} \
+  --authenticationDatabase admin \
+  ${MONGODB_DATABASE_NAME?} \
+  --eval "db.customers.find();" \
+  --quiet
+
+docker run \
+  --rm \
+  --network compose_default \
+  mongo \
+    mongosh \
+      --host mongo \
+      --username ${MONGODB_USERNAME?} \
+      --password ${MONGODB_PASSWORD_URL_ENCODED?} \
+      --authenticationDatabase admin \
+      ${MONGODB_DATABASE_NAME?} \
+      --eval "db.customers.find();" \
+      --quiet
